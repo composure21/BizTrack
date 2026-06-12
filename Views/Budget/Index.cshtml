@@ -1,0 +1,141 @@
+﻿@model IEnumerable<BizTrack.Models.Budget>
+
+@{
+    ViewData["Title"] = "Budget";
+    decimal totalBudget = Model?.Sum(b => b.BudgetAmount) ?? 0;
+}
+
+<div class="col-md-12 bg-light">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center py-3 px-4 bg-white border-bottom">
+        <h4 class="mb-0">Budget</h4>
+
+        <a asp-action="Create" class="btn btn-primary">
+            + Add Budget
+        </a>
+    </div>
+
+    <div class="p-4">
+
+        <!-- Total Budget Card -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+
+                    <div class="col-md-10">
+                        <h6 class="text-muted mb-2">Total Budget</h6>
+
+                        <h2 class="fw-bold text-success">
+                            @totalBudget.ToString("C")
+                        </h2>
+
+                        <small class="text-muted">
+                            This month
+                        </small>
+                    </div>
+
+                    <div class="col-md-2 text-end">
+                        <div class="bg-success bg-opacity-10 rounded p-3 d-inline-block">
+                            <i class="bi bi-wallet2 text-success fs-1"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Table -->
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+
+                <table class="table table-hover mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Budget Amount</th>
+                            <th>Spent So Far</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td>@item.Date.ToString("MMM dd, yyyy")</td>
+
+                                    <td>@item.CategoryId</td>
+
+                                    <td>@item.BudgetAmount.ToString("C")</td>
+
+                                    <td>@item.SpentSoFar.ToString("C")</td>
+
+                                    <td>@item.Notes</td>
+
+                                    <td>
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.BudgetId"
+                                           class="btn btn-sm btn-warning">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.BudgetId"
+                                           class="btn btn-sm btn-danger">
+                                            Delete
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    No budgets found.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="d-flex justify-content-between mt-3">
+
+            <small class="text-muted">
+                Showing @(Model?.Count() ?? 0) budget(s)
+            </small>
+
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item active">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link">2</span>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link">3</span>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,240 @@
+﻿@model BizTrack.Models.Dashboard
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="col-md-12 bg-light">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center py-3 px-4 bg-white border-bottom">
+        <h4 class="mb-0">Dashboard</h4>
+    </div>
+
+    <div class="p-4">
+
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <small class="text-muted">Total Income</small>
+                        <h3 class="text-success">
+                            @Model.TotalIncome.ToString("C")
+                        </h3>
+                        <small class="text-muted">This month</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <small class="text-muted">Total Expenses</small>
+                        <h3 class="text-danger">
+                            @Model.TotalExpenses.ToString("C")
+                        </h3>
+                        <small class="text-muted">This month</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <small class="text-muted">Net Savings</small>
+                        <h3 class="text-primary">
+                            @Model.NetSavings.ToString("C")
+                        </h3>
+                        <small class="text-muted">This month</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <small class="text-muted">Budget Progress</small>
+
+                        <h3>@Model.BudgetProgress%</h3>
+
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 style="width:@(Model.BudgetProgress)%"
+                                 aria-valuenow="@Model.BudgetProgress"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+
+                        <small class="text-muted">This month</small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Charts -->
+        <div class="row mb-4">
+
+            <!-- Income vs Expenses -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-header">
+                        <strong>Income vs Expenses</strong>
+                    </div>
+
+                    <div class="card-body">
+                        <div style="height:300px;">
+                            <canvas id="incomeChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Expenses by Category -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-header">
+                        <strong>Expenses by Category</strong>
+                    </div>
+
+                    <div class="card-body">
+                        <div style="height:300px;">
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="card shadow-sm">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Recent Transactions</span>
+
+                <a asp-controller="Transactions"
+                   asp-action="Index">
+                    View All
+                </a>
+            </div>
+
+            <div class="card-body p-0">
+
+                <table class="table table-hover mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.RecentTransactions?.Any() == true)
+                        {
+                            @foreach (var item in Model.RecentTransactions)
+                            {
+                                <tr>
+                                    <td>@item.Date.ToString("dd MMM yyyy")</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.CategoryId</td>
+
+                                    <td class="@(item.IsIncome ? "text-success" : "text-danger")">
+                                        @item.Amount.ToString("C")
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-4">
+                                    No recent transactions found.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        // Income vs Expenses
+        new Chart(document.getElementById('incomeChart'), {
+        type: 'bar',
+        data: {
+        labels: ['Income', 'Expenses'],
+        datasets: [{
+        label: 'Amount',
+        data: [
+        @Model.TotalIncome,
+        @Model.TotalExpenses
+        ],
+        backgroundColor: [
+        '#198754',
+        '#dc3545'
+        ]
+        }]
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false
+        }
+        });
+
+        // Expenses by Category
+        new Chart(document.getElementById('expenseChart'), {
+        type: 'doughnut',
+        data: {
+        labels: @Html.Raw(JsonSerializer.Serialize(Model.ExpenseCategories ?? new List<string>())),
+        datasets: [{
+        data: @Html.Raw(JsonSerializer.Serialize(Model.ExpenseCategoryTotals ?? new List<decimal>())),
+        backgroundColor: [
+        '#0d6efd',
+        '#20c997',
+        '#ffc107',
+        '#dc3545',
+        '#6f42c1',
+        '#fd7e14',
+        '#198754',
+        '#6610f2'
+        ]
+        }]
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+        legend: {
+        position: 'right'
+        }
+        }
+        }
+        });
+
+    </script>

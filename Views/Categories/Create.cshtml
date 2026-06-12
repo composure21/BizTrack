@@ -1,0 +1,114 @@
+﻿@model BizTrack.Models.Categories
+
+@{
+    ViewData["Title"] = "Add Category";
+}
+
+<div class="col-md-12 p-4">
+
+    <h2 class="mb-3">Add Category</h2>
+
+    <a asp-action="Index" class="btn btn-link mb-3">
+        ← Back to Categories
+    </a>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Category Name -->
+                <div class="row mb-3">
+                    <label asp-for="CategoryName" class="col-md-3 col-form-label"></label>
+
+                    <div class="col-md-9">
+                        <input asp-for="CategoryName" class="form-control" />
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Type -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Type</label>
+
+                    <div class="col-md-9">
+
+                        <div class="form-check form-check-inline">
+                            <input asp-for="Type"
+                                   class="form-check-input"
+                                   type="radio"
+                                   value="Income" />
+                            <label class="form-check-label">Income</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input asp-for="Type"
+                                   class="form-check-input"
+                                   type="radio"
+                                   value="Expense" />
+                            <label class="form-check-label">Expense</label>
+                        </div>
+
+                        <span asp-validation-for="Type" class="text-danger d-block"></span>
+
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="row mb-3">
+                    <label asp-for="Description" class="col-md-3 col-form-label"></label>
+
+                    <div class="col-md-9">
+                        <textarea asp-for="Description"
+                                  rows="3"
+                                  class="form-control"></textarea>
+
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Icon -->
+                <div class="row mb-3">
+                    <label asp-for="Icon" class="col-md-3 col-form-label"></label>
+
+                    <div class="col-md-9">
+                        <input asp-for="Icon"
+                               class="form-control"
+                               placeholder="e.g. bi-wallet2" />
+
+                        <span asp-validation-for="Icon" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Colour -->
+                <div class="row mb-4">
+                    <label asp-for="Colour" class="col-md-3 col-form-label"></label>
+
+                    <div class="col-md-1">
+                        <input asp-for="Colour"
+                               type="color"
+                               class="form-control form-control-color" />
+
+                        <span asp-validation-for="Colour" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="text-end">
+                    <a asp-action="Index" class="btn btn-outline-secondary me-2">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        Save Category
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

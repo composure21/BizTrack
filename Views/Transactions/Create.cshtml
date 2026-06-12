@@ -1,0 +1,126 @@
+﻿@model BizTrack.Models.Transactions
+
+@{
+    ViewData["Title"] = "Add Transaction";
+}
+
+<div class="col-md-12 p-4">
+    <h2 class="mb-3">Add Transaction</h2>
+
+    <a asp-action="Index" class="btn btn-link mb-3">
+        ← Back to Transactions
+    </a>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Date -->
+                <div class="row mb-3">
+                    <label asp-for="Date" class="col-md-3 col-form-label"></label>
+                    <div class="col-md-9">
+                        <input asp-for="Date" type="date" class="form-control" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="row mb-3">
+                    <label asp-for="Description" class="col-md-3 col-form-label"></label>
+                    <div class="col-md-9">
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="row mb-3">
+                    <label asp-for="CategoryId" class="col-md-3 col-form-label">
+                        Category
+                    </label>
+                    <div class="col-md-9">
+                        <select asp-for="CategoryId"
+                                asp-items="ViewBag.Categories"
+                                class="form-select">
+                            <option value="">Select Category</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Type -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">Type</label>
+                    <div class="col-md-9">
+                        <div class="form-check form-check-inline">
+                            <input asp-for="Type"
+                                   class="form-check-input"
+                                   type="radio"
+                                   value="Income" />
+                            <label class="form-check-label">Income</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input asp-for="Type"
+                                   class="form-check-input"
+                                   type="radio"
+                                   value="Expense" />
+                            <label class="form-check-label">Expense</label>
+                        </div>
+
+                        <span asp-validation-for="Type" class="text-danger d-block"></span>
+                    </div>
+                </div>
+
+                <!-- Amount -->
+                <div class="row mb-3">
+                    <label asp-for="Amount" class="col-md-3 col-form-label"></label>
+                    <div class="col-md-9">
+                        <input asp-for="Amount" class="form-control" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="row mb-3">
+                    <label asp-for="PaymentMethod" class="col-md-3 col-form-label"></label>
+                    <div class="col-md-9">
+                        <select asp-for="PaymentMethod" class="form-select">
+                            <option value="">Select Payment Method</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Debit Card">Debit Card</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                        </select>
+                        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="row mb-3">
+                    <label asp-for="Notes" class="col-md-3 col-form-label"></label>
+                    <div class="col-md-9">
+                        <textarea asp-for="Notes"
+                                  class="form-control"
+                                  rows="4"></textarea>
+                        <span asp-validation-for="Notes" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="text-end">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        Save Transaction
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

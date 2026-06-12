@@ -1,0 +1,2 @@
+C:\Users\g\source\repos\BizTrack\BizTrack\wwwroot\css\styles.css
+C:\Users\g\source\repos\BizTrack\BizTrack\wwwroot\js\scripts.js

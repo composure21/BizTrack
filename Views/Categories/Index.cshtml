@@ -1,0 +1,116 @@
+﻿@model IEnumerable<BizTrack.Models.Categories>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="col-md-12 bg-light">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center py-3 px-4 bg-white border-bottom">
+        <h4 class="mb-0">Categories</h4>
+
+        <a asp-action="Create" class="btn btn-primary">
+            + Add Category
+        </a>
+    </div>
+
+    <div class="p-4">
+
+        <!-- Categories Table -->
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+
+                <table class="table table-hover mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Category Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Icon</th>
+                            <th>Colour</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td>@item.CategoryId</td>
+
+                                    <td>@item.CategoryName</td>
+
+                                    <td>@item.Type</td>
+
+                                    <td>@item.Description</td>
+
+                                    <td>@item.Icon</td>
+
+                                    <td>@item.Colour</td>
+
+                                    <td>
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.CategoryId"
+                                           class="btn btn-sm btn-warning">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.CategoryId"
+                                           class="btn btn-sm btn-danger">
+                                            Delete
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center py-4">
+                                    No categories found.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="d-flex justify-content-between mt-3">
+
+            <small class="text-muted">
+                Showing @(Model?.Count() ?? 0) categories
+            </small>
+
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item active">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link">2</span>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link">3</span>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+
+    </div>
+
+</div>
